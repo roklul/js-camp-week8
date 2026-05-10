@@ -55,9 +55,14 @@ async function updateProduct(cartId, quantity) {
   if (!validation.isValid) {
     return { success: false, error: validation.error };
   }
-  const data = await updateCartItem(cartId, quantity);
-  return { success: true, data }; 
+  try {
+    const result = await updateCartItem(cartId, quantity);
+    return { success: true, data: result }; 
+  } catch (error) {
+  return { success: false, error: error.message };
+  }
 }
+
 
 /**
  * 移除購物車商品
@@ -69,8 +74,8 @@ async function removeProduct(cartId) {
   // 提示：呼叫 deleteCartItem()
   // 回傳格式：{ success: true, data: ... } / { success: false, error: ... }
   try {
-    const data = await deleteCartItem(cartId);
-    return { success: true, data };
+    const result = await deleteCartItem(cartId);
+    return { success: true, data :result };
   } catch (error) {
     return { success: false, error: error.message };
   }
@@ -84,6 +89,12 @@ async function emptyCart() {
   // 請實作此函式
   // 提示：呼叫 clearCart()
   // 回傳格式：{ success: true, data: ... } 
+  try {
+    const result = await clearCart();
+    return { success: true, data: result }; 
+  } catch (error) {
+  return { success: false, error: error.message };    
+  }
 }
 
 /**
@@ -94,6 +105,12 @@ async function getCartTotal() {
   // 請實作此函式
   // 提示：呼叫 fetchCart() 取得購物車資料
   // 回傳格式：{ total: 原始金額, finalTotal: 折扣後金額, itemCount: 商品筆數 }
+  const cart = await fetchCart();
+  return {
+    total: cart.total,
+    finalTotal: cart.finalTotal,
+    itemCount: cart.carts.length,
+  };
 }
 
 /**
@@ -115,6 +132,24 @@ function displayCart(cart) {
   // ----------------------------------------
   // 商品總計：NT$ 1,600
   // 折扣後金額：NT$ 1,600
+
+  if(!cart.carts || cart.carts.length === 0) {
+    console.log('購物車是空的');
+    return;
+  }
+  
+  console.log(`購物車內容：`);
+  console.log(`----------------------------------------`);
+  cart.carts.forEach((item, index) => {
+    const subtotal = item.price * item.quantity;
+    console.log(`${index + 1} ${item.product.title}`);
+    console.log(`   數量：${item.quantity}`);
+    console.log(`   單價：${formatCurrency(item.price)}`);
+    console.log(`   小計：${formatCurrency(subtotal)}`);
+    console.log('----------------------------------------');
+  });
+  console.log(`商品總計：${formatCurrency(cart.total)}`);
+  console.log(`折扣後金額：${formatCurrency(cart.finalTotal)}`);
 }
 
 module.exports = {
