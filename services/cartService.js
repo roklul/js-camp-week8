@@ -141,10 +141,10 @@ function displayCart(cart) {
   console.log(`購物車內容：`);
   console.log(`----------------------------------------`);
   cart.carts.forEach((item, index) => {
-    const subtotal = item.price * item.quantity;
+    const subtotal = item.product.price * item.quantity;
     console.log(`${index + 1} ${item.product.title}`);
     console.log(`   數量：${item.quantity}`);
-    console.log(`   單價：${formatCurrency(item.price)}`);
+    console.log(`   單價：${formatCurrency(item.product.price)}`);
     console.log(`   小計：${formatCurrency(subtotal)}`);
     console.log('----------------------------------------');
   });

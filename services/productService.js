@@ -81,8 +81,8 @@ function displayProducts(products) {
   products.forEach((product, index) => {
     console.log(`${index + 1} ${product.title}`);
     console.log(`   分類：${product.category}`);
-    console.log(`   原價：NT$ ${formattedOriginPrice}`);
-    console.log(`   售價：NT$ ${formattedPrice} (${discountRate})`);
+    console.log(`   原價：NT$ ${formatCurrency(product.origin_price)}`);
+    console.log(`   售價：NT$ ${formatCurrency(product.price)} (${getDiscountRate(product.origin_price, product.price)}折)`); 
     console.log('----------------------------------------');
   });
 }
