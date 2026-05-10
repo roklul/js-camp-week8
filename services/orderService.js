@@ -153,7 +153,34 @@ function displayOrders(orders) {
   // 商品明細：
   //   - 產品名稱 x 2（產品數量）
   // ========================================
-}
+
+  if (!orders || orders.length === 0) {
+    console.log("沒有訂單");
+    return;
+  }
+
+  console.log(`訂單列表`);
+  console.log(`========================================`);
+  orders.forEach((order, index) => {
+    const formattedOrder = formatOrder(order);
+    console.log(`訂單 ${index + 1}`);
+    console.log("----------------------------------------");
+    console.log(`訂單編號：${formattedOrder.id}`);
+    console.log(`顧客姓名：${formattedOrder.user.name}`);
+    console.log(`聯絡電話：${formattedOrder.user.tel}`);
+    console.log(`寄送地址：${formattedOrder.user.address}`);
+    console.log(`付款方式：${formattedOrder.user.payment}`);
+    console.log(`訂單金額：${formattedOrder.totalFormatted}`);
+    console.log(`付款狀態：${formattedOrder.paidText}`);
+    console.log(`建立時間：${formattedOrder.createdAt} (${formattedOrder.daysAgo} 天前)`);
+    console.log(`----------------------------------------`);
+    console.log(`商品明細：`);
+    formattedOrder.products.forEach(product => {
+      console.log(`  - ${product.title} x ${product.quantity}`);
+        } );
+    console.log(`========================================`);
+  });
+} 
 
 module.exports = {
   placeOrder,
